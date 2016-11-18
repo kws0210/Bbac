@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBbac">#FF164C</color>
+    <color name="colorDipBbac">#D3261A</color>
+    <color name="colorBbacLight">#33F4513B</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#202020</color>
+    <color name="colorChacol">#8A8C8C</color>
+    <color name="colorGray">#C8C8C8</color>
+    <color name="colorLightGray">#EAEAEA</color>
+    <color name="colorDimmedBlack">#4D4D4D</color>
+</resources>

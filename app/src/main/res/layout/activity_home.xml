@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context="world.picpic.www.bbac.HomeActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/layoutTitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:background="@color/colorBbac">
+
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/btn_home"
+            android:gravity="center"
+            android:layout_marginLeft="14dp"
+            android:layout_centerVertical="true"/>
+
+        <LinearLayout
+            android:id="@+id/llAllCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_alignParentLeft="true"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvAllCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:text="@string/select_all"
+                android:textSize="14dp"
+                android:textColor="@color/colorWhite" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tvFragmentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_centerInParent="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:gravity="bottom"
+            android:clickable="true"/>
+
+        <ImageView
+            android:id="@+id/ivAppIcon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:background="@drawable/ic_reverse"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/tvFragmentTitle" />
+
+        <ImageView
+            android:id="@+id/ivFragmentTitle"
+            android:layout_width="18dp"
+            android:layout_height="9dp"
+            android:src="@drawable/arrow_down"
+            android:layout_centerVertical="true"
+            android:paddingLeft="5dp"
+            android:layout_toRightOf="@id/tvFragmentTitle"
+            android:clickable="true"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:padding="4dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+
+            <Button
+                android:id="@+id/btnMy"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="9dp"
+                android:layout_alignParentRight="true"
+                android:padding="5dp"
+                android:background="@drawable/icon_message_list" />
+
+            <TextView
+                android:id="@+id/tvMessageCount"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:gravity="center"
+                android:layout_marginTop="2dp"
+                android:paddingTop="3dp"
+                android:paddingRight="1dp"
+                android:textColor="@color/colorBbac"
+                android:textStyle="bold"
+                android:textSize="10dp"
+                android:background="@drawable/circle_white"
+                android:layout_alignParentRight="true"/>
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="9dp"
+                android:background="@android:color/transparent"
+                android:text="@string/btn_delete_nor"
+                android:gravity="right|center_vertical"
+                android:textColor="@color/colorWhite"
+                android:layout_centerVertical="true"
+                android:textSize="14dp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/mainFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layoutTitle"
+        android:background="@color/colorBbac" />
+
+
+    <LinearLayout
+        android:id="@+id/llSendOptions"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/spinnerSendType"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="3"
+            android:layout_marginRight="5dp"
+            android:paddingLeft="5dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/home_spinner_type_app_with_sms"
+            android:textSize="13dp"
+            android:background="@drawable/selectbox" />
+
+        <Button
+            android:id="@+id/btnSendMessage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_btn_send_message"
+            android:text="@string/home_btn_send"
+            android:textColor="@color/colorWhite"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

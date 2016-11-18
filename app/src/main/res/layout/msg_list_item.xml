@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/msg_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:id="@+id/llCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/btnCheck"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/select_nor" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:paddingTop="10dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp"
+                android:ellipsize="end"
+                android:maxLength="300" />
+
+            <LinearLayout
+                android:id="@+id/llReplyAndTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivIsReply"
+                    android:layout_width="19dp"
+                    android:layout_height="17dp"
+                    android:layout_gravity="bottom"/>
+
+                <TextView
+                    android:id="@+id/tvMsgTime"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="bottom"
+                    android:gravity="right|bottom"
+                    android:text="41분 전"
+                    android:textColor="@color/colorChacol"
+                    android:textSize="10dp"
+                    android:textStyle="bold" />
+
+
+                <Button
+                    android:id="@+id/btnReply"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/rounded_btn_send_message"
+                    android:text="@string/btn_reply"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="7dp"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/msgDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray" />
+
+    </LinearLayout>
+
+</LinearLayout>

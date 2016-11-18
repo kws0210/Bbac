@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutHome"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <world.picpic.www.bbac.util.BackPressEditText
+            android:id="@+id/editPhoneNo"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edittext"
+            android:hint="@string/home_hint_phone"
+            android:inputType="number"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorChacol"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/btnPhoneNo"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/btn_plus"
+            android:scaleType="fitXY" />
+
+    </LinearLayout>
+
+    <world.picpic.www.bbac.util.BackPressEditText
+        android:id="@+id/editMessage"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:background="@drawable/rounded_edittext"
+        android:gravity="top|left"
+        android:hint="@string/home_hint_message"
+        android:padding="10dp"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorChacol"
+        android:maxLength="300"
+        android:textSize="16dp" />
+
+</LinearLayout>

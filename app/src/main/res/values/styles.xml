@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimaryDark">@color/colorBbac</item>
+        <item name="android:typeface">serif</item>
+    </style>
+
+    <style name="ProgressDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="colorAccent">@color/colorBbac</item>
+    </style>
+
+</resources>

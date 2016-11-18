@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "254489422539",
+    "firebase_url": "https://bbac-d4dd9.firebaseio.com",
+    "project_id": "bbac-d4dd9",
+    "storage_bucket": "bbac-d4dd9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254489422539:android:5701ff0d3796b3d2",
+        "android_client_info": {
+          "package_name": "world.picpic.www.bbac"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254489422539-9q0tkfmkbe0s9sudut0cbdals51nkeqt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "world.picpic.www.bbac",
+            "certificate_hash": "BFD25C411A9E0262B3B25DA9D4C9A4174689F115"
+          }
+        },
+        {
+          "client_id": "254489422539-akh3t8k8019tt49pn4gihb2fekd5dlj3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs8ZmsyXOOeyRu_RAvV6qWbaC0AmggzfA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254489422539-akh3t8k8019tt49pn4gihb2fekd5dlj3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
