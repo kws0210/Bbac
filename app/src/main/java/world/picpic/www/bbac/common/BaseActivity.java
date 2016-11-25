@@ -166,6 +166,37 @@ public class BaseActivity extends FragmentActivity{
         dialog.show();
     }
 
+    public void showDialog(String msg, int positiveMsgId, final View.OnClickListener positiveListener, int negativeMsgId, final View.OnClickListener negativeListener) {
+        final Dialog dialog = new Dialog(this, R.style.noTitleDialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.alertdialog);
+
+        TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
+        tv.setText(msg);
+        Button btnPositive = (Button) dialog.findViewById(R.id.btn_alert_dialog_positive);
+        Button btnNegative = (Button) dialog.findViewById(R.id.btn_alert_dialog_negative);
+        btnPositive.setText(positiveMsgId);
+        btnNegative.setText(negativeMsgId);
+        btnPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (positiveListener != null)
+                    positiveListener.onClick(v);
+                dialog.dismiss();
+            }
+        });
+        btnNegative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (negativeListener != null)
+                    negativeListener.onClick(v);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
     public void showSelectDialog(int positiveMsgId, final View.OnClickListener positiveListener, int negativeMsgId, final View.OnClickListener negativeListener) {
         final Dialog dialog = new Dialog(this, R.style.noTitleDialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

@@ -63,7 +63,8 @@
     <string name="complete">완료</string>
     <string name="check_guide">다시 보지 않기</string>
     <string name="postfix_sms">\n\n익명메세지 &lt;빡&gt;에서\n앱링크:</string>
-    <string name="sms_exceeed">하루 할당량 20개 다 사용해서 앱메세지만 보낼게</string>
+    <!--<string name="sms_exceeed">하루 할당량 20개 다 사용해서 앱메세지만 보낼게</string>-->
+    <!--<string name="should_update">최신 버전으로 업데이트가 필요합니다. 업데이트 하시겠습니까?</string>-->
     <string name="tag_msg_list">MsgListFragment</string>
     <string name="tag_home">HomeFragment</string>
 

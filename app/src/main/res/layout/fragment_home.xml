@@ -30,7 +30,7 @@
             android:paddingRight="10dp"
             android:textColor="@color/colorBlack"
             android:textColorHint="@color/colorChacol"
-            android:textSize="16dp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btnPhoneNo"
@@ -53,6 +53,6 @@
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorChacol"
         android:maxLength="300"
-        android:textSize="16dp" />
+        android:textSize="14dp" />
 
 </LinearLayout>

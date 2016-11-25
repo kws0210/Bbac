@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -24,10 +25,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.StringTokenizer;
 import world.picpic.www.bbac.HomeActivity;
 import world.picpic.www.bbac.R;
 import world.picpic.www.bbac.common.BaseActivity;
+import world.picpic.www.bbac.common.ResultCd;
 import world.picpic.www.bbac.common.Url;
 import world.picpic.www.bbac.util.BackPressEditText;
 import world.picpic.www.bbac.util.CommonUtil;
@@ -41,7 +45,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
     private LinearLayout llSendOptions;
     private Button btnHome, btnSendMessage, btnPhoneNo, btnMy, spinnerSendType;
     private String editedPhoneNo = "";
-    private boolean isWithSms = true;
     private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 11;
     private final int REQ_CODE_REGISTER         = 12;
@@ -61,8 +64,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         btnSendMessage = (Button) context.findViewById(R.id.btnSendMessage);
         spinnerSendType = (Button) context.findViewById(R.id.spinnerSendType);
         llSendOptions = (LinearLayout) context.findViewById(R.id.llSendOptions);
+
+        Typeface myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/TmonMonsori.ttf");
         editPhoneNo.setText("");
         editMessage.setText("");
+        editPhoneNo.setTypeface(myTypeface);
+        editMessage.setTypeface(myTypeface);
 
         llSendOptions.setVisibility(View.VISIBLE);
         context.findViewById(R.id.ivAppIcon).setVisibility(View.VISIBLE);
@@ -84,6 +91,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
                                 editedPhoneNo += temp;
                             }
                             editPhoneNo.setText(editedPhoneNo);
+                        } else if (editPhoneNo.getTag() != null && phoneNo.contains("<")) {
+                            phoneNo = editPhoneNo.getTag().toString();
+                            editPhoneNo.setText(phoneNo);
                         }
                         llSendOptions.setBackground(getResources().getDrawable(R.drawable.layout_with_chacol_stroke));
                     } else {
@@ -174,6 +184,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
                             }
                             if (phoneNo.contains("-")) {
                                 StringTokenizer tokenizer = new StringTokenizer(phoneNo, "-");
+                                editedPhoneNo = "";
                                 while (tokenizer.hasMoreTokens()) {
                                     String temp = tokenizer.nextToken();
                                     editedPhoneNo += temp;
@@ -218,7 +229,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
             }
         };
         spinnerSendType.setOnClickListener(this);
-        spinnerSendType.setText(getResources().getString(R.string.home_spinner_type_app_with_sms));
+        if(CommonUtil.getIsWithSms(context))
+            spinnerSendType.setText(getResources().getString(R.string.home_spinner_type_app_with_sms));
+        else
+            spinnerSendType.setText(getResources().getString(R.string.home_spinner_type_app));
 
         fragmentView.findViewById(R.id.layoutHome).setOnClickListener(onOutsideClickListnener);
         fragmentView.findViewById(R.id.layoutHome).setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -263,15 +277,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
                 @Override
                 public void onClick(View v) {
                     spinnerSendType.setText(getResources().getString(R.string.home_spinner_type_app_with_sms));
-                    isWithSms = true;
+                    CommonUtil.setIsWithSms(context, true);
                 }
             }, R.string.home_spinner_type_app, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     spinnerSendType.setText(getResources().getString(R.string.home_spinner_type_app));
-                    isWithSms = false;
+                    CommonUtil.setIsWithSms(context, false);
                 }
-            }, isWithSms);
+            }, CommonUtil.getIsWithSms(context));
         }
     }
 
@@ -375,36 +389,43 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
     }
 
     @Override
-    public void onSuccess(int requestCode, String responseText) {
+    public void onSuccess(int requestCd, String responseText) {
 
-        if (requestCode == REQ_CODE_SEND_MESSAGE) {
-            if(isWithSms) {
-                sendSms();
-            } else {
-                showCompleteAlert();
+        JSONObject jsonObject = null;
+        String resultCd = "";
+
+        try {
+            jsonObject = new JSONObject(responseText);
+            resultCd = jsonObject.getString("resultCd");
+
+            if(ResultCd.SUCCESS.equals(resultCd)) {
+                if (requestCd == REQ_CODE_SEND_MESSAGE) {
+                    if (CommonUtil.getIsWithSms(context)) {
+                        sendSms();
+                    } else {
+                        showMessageAlert(getResources().getString(R.string.alert_msg_send_complete));
+                    }
+                } else if (requestCd == REQ_CODE_REPLY_MESSAGE) {
+                    if (CommonUtil.getIsWithSms(context)) {
+                        replySms();
+                    } else {
+                        showMessageAlert(getResources().getString(R.string.alert_msg_send_complete));
+                    }
+                }
+            } else if(ResultCd.SUCCESS_WITH_ALERT.equals(resultCd)) {
+                if (requestCd == REQ_CODE_SEND_SMS) {
+                    String alertMsg = jsonObject.getString("alertMsg");
+                    showMessageAlert(alertMsg);
+                }
             }
-        } else if (requestCode == REQ_CODE_REPLY_MESSAGE) {
-            if(isWithSms) {
-                replySms();
-            } else {
-                showCompleteAlert();
-            }
-        } else if (requestCode == REQ_CODE_SEND_SMS) {
-            showCompleteAlert();
-        } else if (requestCode == REQ_CODE_REGISTER) {
-            Log.v("KWS", "Data inserted successfully. Send successfull.");
-        } else {
-            Log.v("KWS", "SUCCESS but Data inserted unsuccessfully.");
+        } catch (Exception e) {
+            onFailure(requestCd, responseText);
         }
     }
 
     @Override
-    public void onFailure(int requestCode, String responseText) {
-        if(responseText.startsWith("message")){
-            showMessageAlert(getResources().getString(R.string.sms_exceeed));
-        } else {
-            Toast.makeText(context, getResources().getString(R.string.network_error), Toast.LENGTH_LONG).show();
-        }
+    public void onFailure(int requestCd, String responseText) {
+        Toast.makeText(context, getResources().getString(R.string.network_error), Toast.LENGTH_LONG).show();
     }
 
     private BackPressEditText.OnBackPressListener onBackPressListener = new BackPressEditText.OnBackPressListener()
@@ -455,22 +476,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         NetworkThreadTask mTask = new NetworkThreadTask(context, true);
         mTask.setOnCompleteListener(this);
         mTask.execute(param);
-    }
-
-    private void showCompleteAlert() {
-        ((BaseActivity) context).showAlert(R.string.alert_msg_send_complete,
-                R.string.alert_btn_ok,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if("".equals(((HomeActivity)context).getFromSeq())) {
-                            editPhoneNo.setText("");
-                            editMessage.setText("");
-                        } else {
-                            ((HomeActivity) context).transitFragment(new MsgListFragment(), true);
-                        }
-                    }
-                });
     }
 
     private void showMessageAlert(String message) {

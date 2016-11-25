@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import world.picpic.www.bbac.common.BaseActivity;
+import world.picpic.www.bbac.common.ResultCd;
 import world.picpic.www.bbac.common.Url;
 import world.picpic.www.bbac.fragments.HomeFragment;
 import world.picpic.www.bbac.fragments.MsgListFragment;
@@ -225,15 +226,15 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
                 Cursor cursor = getContentResolver().query(contactData, null, null, null, null);
                 cursor.moveToFirst();
 
-                String id =cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-                String hasPhone =cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                String id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+                String hasPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
 
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String number = "";
                 if (hasPhone.equalsIgnoreCase("1")) {
                     Cursor phones = getContentResolver().query(
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id,
                             null, null);
                     phones.moveToFirst();
                     number = phones.getString(phones.getColumnIndex("data1"));
@@ -241,6 +242,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
 
                 ((HomeFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getEditPhoneNo().setText(CommonUtil.formatMessageTargetNameAndNumber(name, number));
                 ((HomeFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getEditPhoneNo().setTag(number);
+                ((HomeFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getEditPhoneNo().clearFocus();
             }
         }
     }
@@ -257,7 +259,6 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
     };
 
 
-
     @Override
     public void onBackPressed() {
         String fragmentTag = getSupportFragmentManager().findFragmentById(R.id.mainFragment).toString();
@@ -265,7 +266,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
             ((MsgListFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).cancelDelete();
             transitFragment(homeFragment, false);
         } else if (fragmentTag.startsWith(getResources().getString(R.string.tag_home))) {
-            if("".equals(getFromSeq())) {
+            if ("".equals(getFromSeq())) {
                 if (doubleBackToExitPressedOnce) {
                     super.onBackPressed();
                     return;
@@ -303,54 +304,58 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
     }
 
     @Override
-    public void onSuccess(int requestCode, String responseText) {
+    public void onSuccess(int requestCd, String responseText) {
+        JSONObject jsonObject = null;
+        String resultCd = "";
 
-        if (requestCode == REQ_CODE_REGISTER) {
-            Log.v("KWS", "Data inserted successfully. Send successfull.");
-            String fragmentTag = getSupportFragmentManager().findFragmentById(R.id.mainFragment).toString();
-            if (fragmentTag.startsWith(getResources().getString(R.string.tag_msg_list))) {
-                ((MsgListFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getMsgList();
-            } else {
-                requestMsgCount();
-            }
-        } else if (requestCode == REQ_CODE_GET_GOOGLE_PLAY_ADDRESS) {
-            googlePlayAddress = responseText;
-        } else if (requestCode == REQ_CODE_GET_MESSAGE_COUNT) {
+        try {
+            jsonObject = new JSONObject(responseText);
+            resultCd = jsonObject.getString("resultCd");
 
-            try {
-                JSONArray jsonArray = new JSONArray(responseText);
-                JSONObject jsonObject = jsonArray.getJSONObject(0);
-                String totalMessageCount = jsonObject.getString("total");
-
-                CommonUtil.setBadgeCount(getApplicationContext(),  totalMessageCount);
-                setBadgeCount(totalMessageCount);
-
-                String fragmentTag = getSupportFragmentManager().findFragmentById(R.id.mainFragment).toString();
-                if (fragmentTag.startsWith(getResources().getString(R.string.tag_home))) {
-                    if (Integer.parseInt(totalMessageCount) == 0) {
-                        tvMessageCount.setVisibility(View.GONE);
+            if(ResultCd.SUCCESS.equals(resultCd)) {
+                if (requestCd == REQ_CODE_REGISTER) {
+                    String fragmentTag = getSupportFragmentManager().findFragmentById(R.id.mainFragment).toString();
+                    if (fragmentTag.startsWith(getResources().getString(R.string.tag_msg_list))) {
+                        ((MsgListFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getMsgList();
                     } else {
-                        tvMessageCount.setVisibility(View.VISIBLE);
-                        if(Integer.parseInt(totalMessageCount) < 100)
-                            tvMessageCount.setText(totalMessageCount);
-                        else
-                            tvMessageCount.setText("99");
-
+                        requestMsgCount();
                     }
-                }
+                } else if (requestCd == REQ_CODE_GET_GOOGLE_PLAY_ADDRESS) {
+                    googlePlayAddress = jsonObject.getString("googlePlayAddress");
+                } else if (requestCd == REQ_CODE_GET_MESSAGE_COUNT) {
+                    String totalMessageCount = jsonObject.getString("msgCount");
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                onFailure(requestCode, responseText);
+                    CommonUtil.setBadgeCount(getApplicationContext(), totalMessageCount);
+                    setBadgeCount(totalMessageCount);
+
+                    String fragmentTag = getSupportFragmentManager().findFragmentById(R.id.mainFragment).toString();
+                    if (fragmentTag.startsWith(getResources().getString(R.string.tag_home))) {
+                        if (Integer.parseInt(totalMessageCount) == 0) {
+                            tvMessageCount.setVisibility(View.GONE);
+                        } else {
+                            tvMessageCount.setVisibility(View.VISIBLE);
+                            if (Integer.parseInt(totalMessageCount) < 100)
+                                tvMessageCount.setText(totalMessageCount);
+                            else
+                                tvMessageCount.setText("99");
+
+                        }
+                    }
+
+
+                } else {
+                    Log.v("KWS", "SUCCESS but Data inserted unsuccessfully.");
+                    transitFragment(homeFragment, false);
+                }
             }
-        } else {
-            Log.v("KWS", "SUCCESS but Data inserted unsuccessfully.");
-            transitFragment(homeFragment, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            onFailure(requestCd, responseText);
         }
     }
 
     @Override
-    public void onFailure(int requestCode, String responseText) {
+    public void onFailure(int requestCd, String responseText) {
         Log.v("KWS", "Data inserted fail");
         Toast.makeText(this, getResources().getString(R.string.network_error), Toast.LENGTH_LONG).show();
     }

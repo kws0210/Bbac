@@ -79,6 +79,22 @@ public class CommonUtil {
         prefs.edit().putString("badgeCount", badgeCount).commit();
     }
 
+    /**
+     * Get the default value which is with sms.
+     */
+    public static boolean getIsWithSms(Context context){
+        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences(PREF_NAME, context.MODE_PRIVATE);
+        return prefs.getBoolean("isWithSms", true);
+    }
+
+    /**
+     * Set the default value which is with sms.
+     */
+    public static void setIsWithSms(Context context, boolean hasShownGuide){
+        SharedPreferences prefs = context.getApplicationContext().getSharedPreferences(PREF_NAME, context.MODE_PRIVATE);
+        prefs.edit().putBoolean("isWithSms", hasShownGuide).commit();
+    }
+
     public static String formatMessageTargetNameAndNumber(String name, String number) {
         return name + " <" + number + ">";
     }

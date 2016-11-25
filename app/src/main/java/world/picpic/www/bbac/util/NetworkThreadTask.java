@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.util.List;
 
 import world.picpic.www.bbac.R;
+import world.picpic.www.bbac.common.ResultCd;
 
 /**
  * Created by Wonseob on 2016. 8. 15..
@@ -91,14 +92,23 @@ public class NetworkThreadTask extends AsyncTask<Bundle, Bundle, Void> {
     protected void onProgressUpdate(Bundle... response) {
         int reqCode = response[0].getInt("reqCode");
         String responseStr = response[0].getString("response");
+        JSONObject jsonObject = null;
+        String resultCd = "";
 
-        if(context != null && pd != null)
+        if (context != null && pd != null)
             pd.dismiss();
 
-        if (responseStr.startsWith("success")) {
-            responseStr = responseStr.substring(7);
-            onCompleteListener.onSuccess(reqCode, responseStr);
-        } else {
+        try {
+            jsonObject = new JSONObject(responseStr);
+            resultCd = jsonObject.getString("resultCd");
+
+            if (ResultCd.FAILURE.equals(resultCd)) {
+                onCompleteListener.onFailure(reqCode, responseStr);
+            } else {
+                onCompleteListener.onSuccess(reqCode, responseStr);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             onCompleteListener.onFailure(reqCode, responseStr);
         }
     }
