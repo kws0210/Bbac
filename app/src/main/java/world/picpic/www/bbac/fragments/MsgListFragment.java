@@ -456,7 +456,7 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
                 vh.btnReply = (Button) convertView.findViewById(R.id.btnReply);
                 vh.position = position;
 
-                Typeface myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/TmonMonsori.ttf");
+                Typeface myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/NanumGothic.otf");
                 vh.tvMsg.setTypeface(myTypeface);
 
                 View.OnClickListener onItemClickListener = new View.OnClickListener() {

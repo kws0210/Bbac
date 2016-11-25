@@ -28,6 +28,7 @@
             android:inputType="number"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:textStyle="bold"
             android:textColor="@color/colorBlack"
             android:textColorHint="@color/colorChacol"
             android:textSize="14dp" />
@@ -52,6 +53,7 @@
         android:padding="10dp"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorChacol"
+        android:textStyle="bold"
         android:maxLength="300"
         android:textSize="14dp" />
 

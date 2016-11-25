@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         spinnerSendType = (Button) context.findViewById(R.id.spinnerSendType);
         llSendOptions = (LinearLayout) context.findViewById(R.id.llSendOptions);
 
-        Typeface myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/TmonMonsori.ttf");
+        Typeface myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/NanumGothic.otf");
         editPhoneNo.setText("");
         editMessage.setText("");
         editPhoneNo.setTypeface(myTypeface);
