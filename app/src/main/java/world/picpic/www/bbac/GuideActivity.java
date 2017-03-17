@@ -2,12 +2,18 @@ package world.picpic.www.bbac;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +31,13 @@ import world.picpic.www.bbac.util.CommonUtil;
 
 public class GuideActivity extends BaseActivity implements View.OnClickListener {
     private final static int GUIDE_COUNT = 6;
-    private String videoPath = "guide";
     private int[] idImageGuides = {R.drawable.guide0, R.drawable.guide1, R.drawable.guide2, R.drawable.guide3, R.drawable.guide4, R.drawable.guide5};
     private LinearLayout layoutIndicator;
     private View[] pagerIndicators;
     private ViewPager mPager;
     private WalkthroughAdapter mAdapter;
     private Button btnNext;
+    private TextView tvServiceAgree;
     private boolean isGuideChecked, doubleBackToExitPressedOnce = false;
 
 
@@ -47,7 +53,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         initUI();
         mAdapter = new WalkthroughAdapter(this);
 
-        mPager.setOffscreenPageLimit(GUIDE_COUNT + 1);
+        mPager.setOffscreenPageLimit(GUIDE_COUNT);
         mPager.setAdapter(mAdapter);
         mPager.setOnPageChangeListener(mListener);
 
@@ -60,19 +66,16 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
             mPager.setCurrentItem(position);
             mCurrentPage = position;
 
-            if(position == GUIDE_COUNT) {
+            if(position == (GUIDE_COUNT-1)) {
                 for(int i = 0; i< GUIDE_COUNT; i++) {
-                    pagerIndicators[i].setBackground(getResources().getDrawable(R.drawable.circle_orange));
+                    pagerIndicators[i].setBackground(getResources().getDrawable(R.drawable.circle_mint));
                 }
                 btnNext.setVisibility(View.INVISIBLE);
             }
              else {
                 for(int i = 0; i < GUIDE_COUNT; i++) {
                     if( i == position) {
-                        if(i == 0)
-                            pagerIndicators[i].setBackground(getResources().getDrawable(R.drawable.circle_black));
-                        else
-                            pagerIndicators[i].setBackground(getResources().getDrawable(R.drawable.circle_orange));
+                        pagerIndicators[i].setBackground(getResources().getDrawable(R.drawable.circle_white));
                     } else {
                         pagerIndicators[i].setBackground(getResources().getDrawable(R.drawable.circle_background));
                     }
@@ -128,27 +131,23 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             ViewGroup layoutGuide = (ViewGroup) mInflater.inflate(R.layout.guide_item, container, false);
-            ImageView guideImageBbac = (ImageView) layoutGuide.findViewById(R.id.guideImageBbac);
             ImageView guideImage = (ImageView) layoutGuide.findViewById(R.id.guideImage);
 
             try {
-                if(position == GUIDE_COUNT) {
-                    guideImageBbac.setVisibility(View.VISIBLE);
-                    guideImage.setVisibility(View.GONE);
-                }else {
-                    guideImageBbac.setVisibility(View.GONE);
-                    Uri path = Uri.parse("android.resource://" + getPackageName() + "/" + idImageGuides[position]);
-                    guideImage.setImageURI(path);
-                    guideImage.setVisibility(View.VISIBLE);
-                }
+                Uri path = Uri.parse("android.resource://" + getPackageName() + "/" + idImageGuides[position]);
+                guideImage.setImageURI(path);
+                guideImage.setVisibility(View.VISIBLE);
 
             }catch (Exception e) {
                 e.printStackTrace();
             }
 
             LinearLayout layoutGuideText    = (LinearLayout) layoutGuide.findViewById(R.id.layoutGuideText);
-            final Button btnCloseGuide   = (Button) layoutGuide.findViewById(R.id.btnCloseGuide);
+            final TextView tvServiceAgree     = (TextView)layoutGuide.findViewById(R.id.tvServiceAgree);
+            final LinearLayout llCloseGuide   = (LinearLayout) layoutGuide.findViewById(R.id.llCloseGuide);
             final Button btnCheckGuide   = (Button) layoutGuide.findViewById(R.id.btnCheckGuide);
+
+            //가이드 다시 보지 않기
             btnCheckGuide.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -161,7 +160,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     }
                 }
             });
-            btnCloseGuide.setOnClickListener(new View.OnClickListener() {
+            llCloseGuide.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(isGuideChecked)
@@ -173,7 +172,42 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 }
             });
 
-            if (position == GUIDE_COUNT){
+            //개인정보취급방침 및 서비스이용약관 동의 버튼 처리
+            SpannableString ss = new SpannableString(getString(R.string.splash_agree));
+            ClickableSpan clickableSpanServiceUseAgree = new ClickableSpan() {
+                @Override
+                public void onClick(View textView) {
+                    startActivity(new Intent(GuideActivity.this, ServiceUseAgreeActivity.class));
+                    overridePendingTransition(R.anim.animation_from_left, R.anim.animation_to_right);
+                }
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
+            ClickableSpan clickableSpanPersonnelInfoAgree = new ClickableSpan() {
+                @Override
+                public void onClick(View textView) {
+                    startActivity(new Intent(GuideActivity.this, PersonnelInfoAgreeActivity.class));
+                    overridePendingTransition(R.anim.animation_from_left, R.anim.animation_to_right);
+                }
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
+            ss.setSpan(clickableSpanServiceUseAgree, 15, 22, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(clickableSpanPersonnelInfoAgree, 24, 32, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            tvServiceAgree.setText(ss);
+            tvServiceAgree.setMovementMethod(LinkMovementMethod.getInstance());
+            tvServiceAgree.setHighlightColor(Color.TRANSPARENT);
+
+
+
+            if (position == (GUIDE_COUNT-1)){
                 layoutGuideText.setVisibility(View.VISIBLE);
             } else {
                 layoutGuideText.setVisibility(View.GONE);
@@ -192,7 +226,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
 
         @Override
         public int getCount() {
-            return GUIDE_COUNT + 1;
+            return GUIDE_COUNT;
         }
 
         @Override

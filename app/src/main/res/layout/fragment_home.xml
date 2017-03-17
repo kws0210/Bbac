@@ -7,23 +7,29 @@
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorWhite"
         android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvReciever"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="@string/reciever"/>
 
         <world.picpic.www.bbac.util.BackPressEditText
             android:id="@+id/editPhoneNo"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="1"
-            android:background="@drawable/rounded_edittext"
             android:hint="@string/home_hint_phone"
             android:inputType="number"
             android:paddingLeft="10dp"
@@ -31,26 +37,32 @@
             android:textStyle="bold"
             android:textColor="@color/colorBlack"
             android:textColorHint="@color/colorChacol"
+            android:background="@color/colorWhite"
             android:textSize="14dp" />
 
         <Button
             android:id="@+id/btnPhoneNo"
-            android:layout_width="50dp"
-            android:layout_height="35dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="5dp"
             android:background="@drawable/btn_plus"
-            android:scaleType="fitXY" />
+            />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDimmedBlack"/>
 
     <world.picpic.www.bbac.util.BackPressEditText
         android:id="@+id/editMessage"
         android:layout_width="match_parent"
         android:layout_height="450dp"
-        android:background="@drawable/rounded_edittext"
+        android:background="@color/colorWhite"
         android:gravity="top|left"
         android:hint="@string/home_hint_message"
-        android:padding="10dp"
+        android:padding="15dp"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorChacol"
         android:textStyle="bold"

@@ -3,7 +3,7 @@
     android:layout_width="330dp"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/colorWhite">
+    android:background="@drawable/rounded_white_background">
 
     <TextView
         android:id="@+id/tv_alert_dialog"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_alert_dialog"
         android:paddingTop="1dp"
-        android:background="@color/colorGray"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -30,8 +30,8 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_marginRight="1dp"
-            android:background="@drawable/bg_alert_btn"
-            android:textColor="@drawable/font_gray_alert_btn"
+            android:background="@drawable/bg_alert_btn_yellow_rounded_bottom_left"
+            android:textColor="@drawable/font_yellow_alert_btn"
             android:textStyle="bold"
             android:text="@string/alert_btn_neg"
             android:textSize="18sp" />
@@ -40,9 +40,9 @@
             android:id="@+id/btn_alert_dialog_positive"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="2"
-            android:background="@drawable/bg_alert_btn"
-            android:textColor="@drawable/font_black_alert_btn"
+            android:layout_weight="1"
+            android:background="@drawable/bg_alert_btn_mint_rounded_bottom_right"
+            android:textColor="@drawable/font_mint_alert_btn"
             android:textStyle="bold"
             android:text="@string/alert_btn_pos"
             android:textSize="18sp" />

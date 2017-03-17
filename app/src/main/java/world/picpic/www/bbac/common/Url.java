@@ -14,7 +14,10 @@ public class Url {
     public static final String REPLY_MESSAGE        = DOMAIN + "reply_message.php";
     public static final String REPLY_SMS            = DOMAIN + "reply_sms.php";
     public static final String GET_MESSAGE_LIST     = DOMAIN + "get_message_list.php";
-    public static final String GET_SEND_MESSAGE_LIST     = DOMAIN + "get_send_message_list.php";
+    public static final String GET_MESSAGE_LIST_BY_OFFSET       = DOMAIN + "get_message_list_by_offset.php";
+    public static final String GET_SEND_MESSAGE_LIST            = DOMAIN + "get_send_message_list.php";
+    public static final String GET_SEND_MESSAGE_LIST_BY_OFFSET  = DOMAIN + "get_send_message_list_by_offset.php";
+    public static final String GET_SEND_MESSAGE_FROM_REPLY      = DOMAIN + "get_send_message_from_reply.php";
     public static final String UPDATE_MESSAGE_NEW   = DOMAIN + "update_message_new.php";
     public static final String DELETE_MESSAGE       = DOMAIN + "delete_message.php";
     public static final String DELETE_SEND_MESSAGE  = DOMAIN + "delete_send_message.php";

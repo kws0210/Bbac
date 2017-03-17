@@ -12,6 +12,7 @@ public class BbacApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        CommonUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/BMHANNA_11yrs.ttf");
+//        CommonUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/BMHANNA_11yrs.ttf");
+        CommonUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/NanumGothic.otf");
     }
 }

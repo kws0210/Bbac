@@ -15,12 +15,12 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="center_vertical"
-        android:background="@color/colorBbac">
+        android:background="@color/colorMint">
 
         <Button
             android:id="@+id/btnHome"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/btn_home"
             android:gravity="center"
             android:layout_marginLeft="14dp"
@@ -60,15 +60,6 @@
             android:clickable="true"/>
 
         <ImageView
-            android:id="@+id/ivAppIcon"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:background="@drawable/ic_reverse"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@id/tvFragmentTitle" />
-
-        <ImageView
             android:id="@+id/ivFragmentTitle"
             android:layout_width="18dp"
             android:layout_height="9dp"
@@ -104,7 +95,7 @@
                 android:layout_marginTop="2dp"
                 android:paddingTop="3dp"
                 android:paddingRight="1dp"
-                android:textColor="@color/colorBbac"
+                android:textColor="@color/colorMint"
                 android:textStyle="bold"
                 android:textSize="10dp"
                 android:background="@drawable/circle_white"
@@ -132,13 +123,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layoutTitle"
-        android:background="@color/colorBbac" />
+        android:background="@color/colorMint" />
 
 
     <LinearLayout
         android:id="@+id/llSendOptions"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:gravity="center_vertical"
@@ -152,18 +143,19 @@
             android:layout_height="35dp"
             android:layout_weight="3"
             android:layout_marginRight="5dp"
-            android:paddingLeft="5dp"
+            android:paddingLeft="15dp"
             android:gravity="left|center_vertical"
             android:text="@string/home_spinner_type_app_with_sms"
             android:textSize="13dp"
-            android:background="@drawable/selectbox" />
+            android:stateListAnimator="@null"
+            android:background="@drawable/circled_white_box" />
 
         <Button
             android:id="@+id/btnSendMessage"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="35dp"
-            android:background="@drawable/rounded_btn_send_message"
+            android:background="@drawable/circled_mint_box"
             android:text="@string/home_btn_send"
             android:textColor="@color/colorWhite"
             android:textSize="15dp"

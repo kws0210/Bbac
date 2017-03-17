@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import world.picpic.www.bbac.R;
 
 /**
  * Created by Wonseob on 2016. 7. 25..
@@ -123,6 +126,35 @@ public class CommonUtil {
             Log.v("KWS", "Can not set custom font " + customFontFileNameInAssets + " instead of " + defaultFontNameToOverride);
             e.printStackTrace();
         }
+    }
+
+    public static String getTimeForThisApp(Context context, String strTime){
+        final String currentDatedTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String resultString;
+
+        if (currentDatedTime.substring(0, 9).equals(strTime.substring(0, 9))) {
+            int currentMinutes = Integer.parseInt(currentDatedTime.substring(9, 10)) * 1440
+                    + Integer.parseInt(currentDatedTime.substring(11, 13)) * 60
+                    + Integer.parseInt(currentDatedTime.substring(14, 16));
+            int itemMsgMinutes = Integer.parseInt(strTime.substring(9, 10)) * 1440
+                    + Integer.parseInt(strTime.substring(11, 13)) * 60
+                    + Integer.parseInt(strTime.substring(14, 16));
+
+            int diff = currentMinutes - itemMsgMinutes;
+
+            if (diff < 1) {
+                resultString = context.getString(R.string.before_under_1_minute);
+            } else if (diff < 60) {
+                resultString = diff + context.getString(R.string.before_under_1_hour);
+            } else if (diff < 1440) {
+                resultString = (diff / 60) + context.getString(R.string.before_under_1_day);
+            } else {
+                resultString = strTime;
+            }
+        } else {
+            resultString = strTime;
+        }
+        return resultString;
     }
 
 }

@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -42,6 +43,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
     private ImageView ivFragmentTitle;
     private HomeFragment homeFragment;
     private MsgListFragment msgListFragment;
+    private MyToast closeToast;
 
     private final int REQ_PHONE_BOOK = 101;
     private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
@@ -51,14 +53,16 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
     private final int REQ_CODE_GET_GOOGLE_PLAY_ADDRESS = 14;
     private String fromSeq = null;
     private String msgHint = null;
+    private String replySeq = null;
     private String googlePlayAddress = "";
     private boolean doubleBackToExitPressedOnce = false;
     MyBroadcastReceiver mReceiver = null;
     boolean mIsReceiverRegistered = false;
+    private int offsetNum = 0;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
@@ -69,6 +73,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
         tvFragmentTitle = (TextView) findViewById(R.id.tvFragmentTitle);
         tvMessageCount = (TextView) findViewById(R.id.tvMessageCount);
         ivFragmentTitle = (ImageView) findViewById(R.id.ivFragmentTitle);
+        closeToast = new MyToast(this, getString(R.string.toast_back_again));
 
         initFragment();
         initTitle();
@@ -194,7 +199,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
         getFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
-    public void transitFragmentByReply(Fragment fragment, String seq, String msg) {
+    public void transitFragmentByReply(Fragment fragment, String fromWhom, String msg, String seq) {
         btnMy.setBackground(getResources().getDrawable(R.drawable.icon_message_list));
         tvFragmentTitle.setText(getString(R.string.title_btn_home));
         ivFragmentTitle.setVisibility(View.GONE);
@@ -206,8 +211,9 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
         fragmentTransaction.replace(R.id.mainFragment, fragment);
         fragmentTransaction.commitAllowingStateLoss();
 
-        fromSeq = seq;
+        fromSeq = fromWhom;
         msgHint = msg;
+        replySeq = seq;
 
         hideSoftKeyboard(this);
 
@@ -272,7 +278,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
                     return;
                 }
                 doubleBackToExitPressedOnce = true;
-                Toast.makeText(this, getString(R.string.toast_back_again), Toast.LENGTH_LONG).show();
+                closeToast.show();
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -284,6 +290,12 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
                 transitFragment(msgListFragment, true);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        closeToast.cancel();
     }
 
     @Override
@@ -316,7 +328,8 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
                 if (requestCd == REQ_CODE_REGISTER) {
                     String fragmentTag = getSupportFragmentManager().findFragmentById(R.id.mainFragment).toString();
                     if (fragmentTag.startsWith(getResources().getString(R.string.tag_msg_list))) {
-                        ((MsgListFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getMsgList();
+                        offsetNum = 0;
+                        ((MsgListFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getMsgList(this, offsetNum);
                     } else {
                         requestMsgCount();
                     }
@@ -403,6 +416,13 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
             return "";
     }
 
+    public String getReplySeq() {
+        if (replySeq != null)
+            return replySeq;
+        else
+            return "";
+    }
+
     public String getMsgHint() {
         if (msgHint != null)
             return msgHint;
@@ -446,12 +466,33 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
             requestMsgCount();
             String fragmentTag = getSupportFragmentManager().findFragmentById(R.id.mainFragment).toString();
             if (fragmentTag.startsWith(getResources().getString(R.string.tag_msg_list))) {
-                msgListFragment.getMsgList();
+                offsetNum = 0;
+                ((MsgListFragment)getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getMsgList(context, offsetNum);
             }
         }
     }
 
     public String getGooglePlayAddress() {
         return googlePlayAddress;
+    }
+
+    class MyToast {
+        private Toast toast;
+
+        public MyToast(Context ctx, String message) {
+            if (toast != null) {
+                toast.cancel();
+                toast = null;
+            }
+            toast = Toast.makeText(ctx, message, Toast.LENGTH_SHORT);
+        }
+
+        public void show() {
+            toast.show();
+        }
+
+        public void cancel() {
+            toast.cancel();
+        }
     }
 }

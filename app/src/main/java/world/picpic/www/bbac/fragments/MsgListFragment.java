@@ -5,23 +5,16 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.text.Layout;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.Transformation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -58,13 +51,17 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
     private ArrayList<MsgList> groupList;
     private ArrayList<String> seqList;
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 11;
-    private final int REQ_CODE_GET_MESSAGE_LIST = 15;
+    private final int REQ_CODE_GET_MESSAGE_LIST_BY_OFFSET = 15;
     private final int REQ_CODE_UPDATE_MESSAGE_NEW = 16;
     private final int REQ_CODE_DELETE_MESSAGE = 17;
     private final int REQ_CODE_DELETE_SEND_MESSAGE = 18;
     private final int REQ_CODE_GET_SEND_MESSAGE_LIST = 19;
+    private final int REQ_CODE_GET_SEND_MESSAGE_FROM_REPLY = 20;
+    private final int REQ_CODE_GET_MESSAGE_FROM_REPLY = 21;
     private ViewHolderGroup selectedViewHolder;
     private boolean isDeleteMode;
+    private int offsetNum = 0;
+    private int msgCount;
 
     private enum msgType {recieved, send}
 
@@ -86,9 +83,16 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
         seqList = new ArrayList<String>();
 
         context.findViewById(R.id.llSendOptions).setVisibility(View.GONE);
-        context.findViewById(R.id.ivAppIcon).setVisibility(View.GONE);
         btnHome.setVisibility(View.VISIBLE);
         mType = msgType.recieved;
+
+        context.findViewById(R.id.layoutTitle).setBackgroundResource(R.color.colorYellow);
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = context.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(context, R.color.colorYellow));
+        }
 
         llAllCheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,7 +270,8 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
                 }
             });
         } else {
-            getMsgList();
+            offsetNum = 0;
+            getMsgList(context, offsetNum);
         }
 
         if (selectedViewHolder != null) {
@@ -287,37 +292,41 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
     public void onResume() {
         super.onResume();
         if (!"".equals(CommonUtil.getUserPhoneNo(context)))
-            getMsgList();
+            if(offsetNum == 0)
+                getMsgList(context, offsetNum);
     }
 
-    public void getMsgList() {
-        groupList = new ArrayList<MsgList>();
-        listAdapter = new ListAdapter(context, groupList);
+    public void getMsgList(Context context, int offset) {
+        if(offset == 0) {
+            groupList = new ArrayList<MsgList>();
+            listAdapter = new ListAdapter(context, groupList);
+            msgList.setAdapter(listAdapter);
+        }
 
         if (mType == msgType.recieved)
-            requestMsgList();
+            requestMsgList(context, offset);
         else
-            requestSendMsgList();
-
-        msgList.setAdapter(listAdapter);
+            requestSendMsgList(context, offset);
     }
 
-    private void requestMsgList() {
+    private void requestMsgList(Context context, int offset) {
         Bundle bundle = new Bundle();
-        bundle.putString("url", Url.GET_MESSAGE_LIST);
-        bundle.putInt("reqCode", REQ_CODE_GET_MESSAGE_LIST);
+        bundle.putString("url", Url.GET_MESSAGE_LIST_BY_OFFSET);
+        bundle.putInt("reqCode", REQ_CODE_GET_MESSAGE_LIST_BY_OFFSET);
         bundle.putString("phoneNo", CommonUtil.getUserPhoneNo(context));
+        bundle.putString("offset", String.valueOf(offset));
 
         NetworkThreadTask mTask = new NetworkThreadTask(context, true);
         mTask.setOnCompleteListener(this);
         mTask.execute(bundle);
     }
 
-    private void requestSendMsgList() {
+    private void requestSendMsgList(Context context, int offset) {
         Bundle bundle = new Bundle();
-        bundle.putString("url", Url.GET_SEND_MESSAGE_LIST);
+        bundle.putString("url", Url.GET_SEND_MESSAGE_LIST_BY_OFFSET);
         bundle.putInt("reqCode", REQ_CODE_GET_SEND_MESSAGE_LIST);
         bundle.putString("phoneNo", CommonUtil.getUserPhoneNo(context));
+        bundle.putString("offset", String.valueOf(offset));
 
         NetworkThreadTask mTask = new NetworkThreadTask(context, true);
         mTask.setOnCompleteListener(this);
@@ -357,6 +366,28 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
         mTask.execute(bundle);
     }
 
+    private void requestSendMsgFromReply(String seq) {
+        Bundle bundle = new Bundle();
+        bundle.putString("url", Url.GET_SEND_MESSAGE_FROM_REPLY);
+        bundle.putInt("reqCode", REQ_CODE_GET_SEND_MESSAGE_FROM_REPLY);
+        bundle.putString("seq", seq);
+
+        NetworkThreadTask mTask = new NetworkThreadTask(context, true);
+        mTask.setOnCompleteListener(this);
+        mTask.execute(bundle);
+    }
+
+    private void requestMsgFromReply(String seq) {
+        Bundle bundle = new Bundle();
+        bundle.putString("url", Url.GET_SEND_MESSAGE_FROM_REPLY);
+        bundle.putInt("reqCode", REQ_CODE_GET_MESSAGE_FROM_REPLY);
+        bundle.putString("seq", seq);
+
+        NetworkThreadTask mTask = new NetworkThreadTask(context, true);
+        mTask.setOnCompleteListener(this);
+        mTask.execute(bundle);
+    }
+
     @Override
     public void onSuccess(int requestCd, String responseText) {
         JSONObject jsonObject = null;
@@ -367,9 +398,10 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
             resultCd = jsonObject.getString("resultCd");
 
             if(ResultCd.SUCCESS.equals(resultCd)) {
-                if ((requestCd == REQ_CODE_GET_MESSAGE_LIST) || (requestCd == REQ_CODE_GET_SEND_MESSAGE_LIST)) {
+                if ((requestCd == REQ_CODE_GET_MESSAGE_LIST_BY_OFFSET) || (requestCd == REQ_CODE_GET_SEND_MESSAGE_LIST)) {
+                    msgCount = jsonObject.getInt("msgCount");
                     jsonArray = jsonObject.getJSONArray("msgList");
-                    setMsgList(jsonArray);
+                    setMsgList(jsonArray, Integer.parseInt(jsonObject.getString("offset")));
                 } else if (requestCd == REQ_CODE_UPDATE_MESSAGE_NEW) {
                     selectedViewHolder.isNew = false;
                     setImageOfMsgType(selectedViewHolder);
@@ -392,8 +424,21 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
                     btnHome.setVisibility(View.VISIBLE);
 
                     seqList.clear();
-                    getMsgList();
+                    offsetNum = 0;
+                    getMsgList(context, offsetNum);
                     isDeleteMode = false;
+                } else if (requestCd == REQ_CODE_GET_SEND_MESSAGE_FROM_REPLY) {
+                    selectedViewHolder.llSendMsgFromReply.setVisibility(View.VISIBLE);
+                    ((TextView)selectedViewHolder.llSendMsgFromReply.findViewById(R.id.tvSendMsgFromReply)).setText(jsonObject.getString("message"));
+                    ((TextView)selectedViewHolder.llSendMsgFromReply.findViewById(R.id.tvSendMsgFromReplyTime)).setText(CommonUtil.getTimeForThisApp(context,jsonObject.getString("time")));
+                    ((TextView)selectedViewHolder.llSendMsgFromReply.findViewById(R.id.tvTitleItemFirst)).setText(getString(R.string.title_send_msg_list));
+                    ((TextView)selectedViewHolder.llSendMsgFromReply.findViewById(R.id.tvTitleItemSecond)).setText(getString(R.string.title_msg_list));
+                } else if (requestCd == REQ_CODE_GET_MESSAGE_FROM_REPLY) {
+                    selectedViewHolder.llSendMsgFromReply.setVisibility(View.VISIBLE);
+                    ((TextView)selectedViewHolder.llSendMsgFromReply.findViewById(R.id.tvSendMsgFromReply)).setText(jsonObject.getString("message"));
+                    ((TextView)selectedViewHolder.llSendMsgFromReply.findViewById(R.id.tvSendMsgFromReplyTime)).setText(CommonUtil.getTimeForThisApp(context,jsonObject.getString("time")));
+                    ((TextView)selectedViewHolder.llSendMsgFromReply.findViewById(R.id.tvTitleItemFirst)).setText(getString(R.string.title_msg_list));
+                    ((TextView)selectedViewHolder.llSendMsgFromReply.findViewById(R.id.tvTitleItemSecond)).setText(getString(R.string.title_send_msg_list));
                 }
             }
         } catch (Exception e) {
@@ -449,6 +494,7 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
                 vh.llReplyAndTime = (LinearLayout) convertView.findViewById(R.id.llReplyAndTime);
                 vh.llCheck = (LinearLayout) convertView.findViewById(R.id.llCheck);
                 vh.btnCheck = (ImageView) convertView.findViewById(R.id.btnCheck);
+                vh.llSendMsgFromReply = (LinearLayout) convertView.findViewById(R.id.llSendMsgFromReply);
                 vh.tvMsg = (TextView) convertView.findViewById(R.id.tvMsg);
                 vh.msgDivder = (View) convertView.findViewById(R.id.msgDivider);
                 vh.tvMsgTime = (TextView) convertView.findViewById(R.id.tvMsgTime);
@@ -456,8 +502,27 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
                 vh.btnReply = (Button) convertView.findViewById(R.id.btnReply);
                 vh.position = position;
 
-                Typeface myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/NanumGothic.otf");
-                vh.tvMsg.setTypeface(myTypeface);
+//                Typeface myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/NanumGothic.otf");
+//                vh.tvMsg.setTypeface(myTypeface);
+
+                vh.seq = item.seq;
+
+                final String fromWhom = item.fromWhom;
+                vh.btnReply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((HomeActivity) context).transitFragmentByReply(new HomeFragment(), fromWhom, item.msg, item.seq);
+                    }
+                });
+
+                if (item.isNew == 1) {
+                    vh.isNew = true;
+                } else {
+                    vh.isNew = false;
+                }
+
+                vh.isReply = item.isReply;
+                setImageOfMsgType(vh);
 
                 View.OnClickListener onItemClickListener = new View.OnClickListener() {
                     @Override
@@ -514,60 +579,8 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
                 };
                 convertView.setOnClickListener(onItemClickListener);
                 vh.tvMsg.setOnClickListener(onItemClickListener);
-
-                vhList.add(vh);
-
-
                 vh.tvMsg.setText(item.msg);
-
-                final String currentDatedTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-                if (currentDatedTime.substring(0, 9).equals(item.msgTime.substring(0, 9))) {
-                    int currentMinutes = Integer.parseInt(currentDatedTime.substring(9, 10)) * 1440
-                            + Integer.parseInt(currentDatedTime.substring(11, 13)) * 60
-                            + Integer.parseInt(currentDatedTime.substring(14, 16));
-                    int itemMsgMinutes = Integer.parseInt(item.msgTime.substring(9, 10)) * 1440
-                            + Integer.parseInt(item.msgTime.substring(11, 13)) * 60
-                            + Integer.parseInt(item.msgTime.substring(14, 16));
-
-                    int diff = currentMinutes - itemMsgMinutes;
-
-                    if (diff < 1) {
-                        vh.tvMsgTime.setText(getResources().getString(R.string.before_under_1_minute));
-                    } else if (diff < 60) {
-                        vh.tvMsgTime.setText(diff + getResources().getString(R.string.before_under_1_hour));
-                    } else if (diff < 1440) {
-                        vh.tvMsgTime.setText((diff / 60) + getResources().getString(R.string.before_under_1_day));
-                    } else {
-                        vh.tvMsgTime.setText(item.msgTime);
-                    }
-                } else {
-                    vh.tvMsgTime.setText(item.msgTime);
-                }
-
-                vh.seq = item.seq;
-
-                final String fromWhom = item.fromWhom;
-                vh.btnReply.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ((HomeActivity) context).transitFragmentByReply(new HomeFragment(), fromWhom, item.msg);
-                    }
-                });
-
-                if (item.isNew == 1) {
-                    vh.isNew = true;
-                } else {
-                    vh.isNew = false;
-                }
-
-                if (item.isReply == 1) {
-                    vh.isReply = true;
-                } else {
-                    vh.isReply = false;
-                }
-
-                setImageOfMsgType(vh);
+                vh.tvMsgTime.setText(CommonUtil.getTimeForThisApp(context, item.msgTime));
 
                 if (isDeleteMode) {
                     vh.llCheck.setVisibility(View.VISIBLE);
@@ -589,9 +602,16 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
                     }
                 }
 
-                if (vh.position == (getCount() - 1)) {
+                if (vh.position == itemList.size() - 1) {
                     vh.msgDivder.setVisibility(View.GONE);
+                    if(msgCount < (offsetNum * 10))
+                        vh.msg_list_item.setBackgroundResource(R.drawable.rounded_bottom_white_background);
+                    else {
+                        offsetNum++;
+                        getMsgList(context, offsetNum);
+                    }
                 }
+                vhList.add(vh);
 
                 convertView.setTag(vh);
 
@@ -625,19 +645,21 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
         public LinearLayout llCheck;
         public ImageView btnCheck;
         public View msgDivder;
+        public LinearLayout llSendMsgFromReply;
         public TextView tvMsg;
         public TextView tvMsgTime;
         public ImageView ivIsReply;
         public Button btnReply;
-        public boolean isReply;
+        public int isReply;
         public boolean isNew;
         public boolean isOpened;
         public String seq;
         public int position;
     }
 
-    private void setMsgList(JSONArray jsonArray) throws Exception {
-        groupList.clear();
+    private void setMsgList(JSONArray jsonArray, int offset) throws Exception {
+        if(offset == 0)
+            groupList.clear();
 
         if (jsonArray.length() > 0) {
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -686,13 +708,18 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
         vh.tvMsg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ((BaseActivity) context).showSelectDialogTwoOptions(R.string.copy, R.string.btn_delete_nor, new View.OnClickListener() {
+                ((BaseActivity) context).showSelectDialogTwoOptions(R.string.copy, R.string.block, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                         clipboardManager.setText(vh.tvMsg.getText());
                     }
-                }, null);
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
                 return false;
             }
         });
@@ -704,10 +731,17 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
             vh.msg_list_item.setBackground(getResources().getDrawable(R.color.colorLightGray));
         }
 
-        if (mType == msgType.recieved)
+        if (mType == msgType.recieved) {
             vh.btnReply.setVisibility(View.VISIBLE);
-        else
+            if(vh.isReply != 0){
+                requestSendMsgFromReply(String.valueOf(vh.isReply));
+            }
+        } else {
             vh.btnReply.setVisibility(View.GONE);
+            if(vh.isReply != 0){
+                requestMsgFromReply(String.valueOf(vh.isReply));
+            }
+        }
         vh.isOpened = true;
     }
 
@@ -715,12 +749,13 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
         vh.tvMsg.setMaxLines(1);
         vh.tvMsg.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
         if (vh.position == 0) {
-            vh.msg_list_item.setBackground(getResources().getDrawable(R.drawable.rounded_white_background));
+            vh.msg_list_item.setBackground(getResources().getDrawable(R.drawable.rounded_top_white_background));
 
         } else {
             vh.msg_list_item.setBackground(getResources().getDrawable(R.color.colorWhite));
         }
         vh.tvMsg.setOnLongClickListener(null);
+        vh.llSendMsgFromReply.setVisibility(View.GONE);
         vh.btnReply.setVisibility(View.GONE);
         vh.isOpened = false;
 
@@ -780,7 +815,8 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
             public void onClick(View v) {
                 mType = msgType.recieved;
                 ((HomeActivity) context).tvFragmentTitle.setText(getString(R.string.title_msg_list));
-                getMsgList();
+                offsetNum = 0;
+                getMsgList(context, offsetNum);
                 if (selectedViewHolder != null) {
                     selectedViewHolder.isOpened = false;
                     selectedViewHolder = null;
@@ -797,7 +833,8 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
             public void onClick(View v) {
                 mType = msgType.send;
                 ((HomeActivity) context).tvFragmentTitle.setText(getString(R.string.title_send_msg_list));
-                getMsgList();
+                offsetNum = 0;
+                getMsgList(context, offsetNum);
                 if (selectedViewHolder != null) {
                     selectedViewHolder.isOpened = false;
                     selectedViewHolder = null;
@@ -815,13 +852,13 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
     private void setImageOfMsgType(ViewHolderGroup vh) {
         if (mType == msgType.recieved) {
             if (vh.isNew) {
-                if (vh.isReply) {
+                if (vh.isReply != 0) {
                     vh.ivIsReply.setBackground(getResources().getDrawable(R.drawable.arrow_recieve_reply));
                 } else {
                     vh.ivIsReply.setBackground(getResources().getDrawable(R.drawable.arrow_recieve));
                 }
             } else {
-                if (vh.isReply) {
+                if (vh.isReply != 0) {
                     vh.ivIsReply.setBackground(getResources().getDrawable(R.drawable.arrow_recieve_reply_checked));
                 } else {
                     vh.ivIsReply.setBackground(getResources().getDrawable(R.drawable.arrow_recieve_checked));
@@ -829,7 +866,7 @@ public class MsgListFragment extends Fragment implements NetworkThreadTask.OnCom
             }
         } else if (mType == msgType.send) {
 //            if(vh.isNew) {
-            if (vh.isReply) {
+            if (vh.isReply != 0) {
                 vh.ivIsReply.setBackground(getResources().getDrawable(R.drawable.arrow_send_reply));
             } else {
                 vh.ivIsReply.setBackground(getResources().getDrawable(R.drawable.arrow_send));

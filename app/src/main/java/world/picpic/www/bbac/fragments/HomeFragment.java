@@ -20,9 +20,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -41,6 +44,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
     private final int REQ_PHONE_BOOK = 101;
     private Activity context;
     private View fragmentView;
+    private TextView tvReciever;
     private BackPressEditText editPhoneNo, editMessage;
     private LinearLayout llSendOptions;
     private Button btnHome, btnSendMessage, btnPhoneNo, btnMy, spinnerSendType;
@@ -57,6 +61,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
 
         btnMy = (Button) context.findViewById(R.id.btnMy);
+        tvReciever = (TextView) fragmentView.findViewById(R.id.tvReciever);
         editPhoneNo = (BackPressEditText) fragmentView.findViewById(R.id.editPhoneNo);
         editMessage = (BackPressEditText) fragmentView.findViewById(R.id.editMessage);
         btnHome = (Button) context.findViewById(R.id.btnHome);
@@ -72,10 +77,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         editMessage.setTypeface(myTypeface);
 
         llSendOptions.setVisibility(View.VISIBLE);
-        context.findViewById(R.id.ivAppIcon).setVisibility(View.VISIBLE);
+
+        context.findViewById(R.id.layoutTitle).setBackgroundResource(R.color.colorMint);
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = context.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(context, R.color.colorMint));
+        }
 
         if("".equals( ((HomeActivity)context).getFromSeq()))  {
             editPhoneNo.setEnabled(true);
+            tvReciever.setVisibility(View.VISIBLE);
             editPhoneNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -124,6 +137,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
             editPhoneNo.setText(getResources().getString(R.string.phone_no_reply));
             editPhoneNo.setGravity(Gravity.CENTER);
             editPhoneNo.setEnabled(false);
+            tvReciever.setVisibility(View.GONE);
             editMessage.setHint(((HomeActivity)context).getMsgHint());
             btnPhoneNo.setVisibility(View.GONE);
         }
@@ -203,7 +217,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
                         } else {
                             param.putInt("reqCode", REQ_CODE_REPLY_MESSAGE);
                             param.putString("url", Url.REPLY_MESSAGE);
-                            param.putString("isReply", "1");
+                            param.putString("isReply", ((HomeActivity)context).getReplySeq());
                         }
                         param.putString("fromWhom", CommonUtil.getUserPhoneNo(context));
                         param.putString("phoneNo", editedPhoneNo);

@@ -37,6 +37,65 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/llSendMsgFromReply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvTitleItemFirst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_send_msg_list"
+                    android:textColor="@color/colorChacol"
+                    android:textSize="14dp"/>
+
+                <TextView
+                    android:id="@+id/tvSendMsgFromReply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/colorChacol"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:maxLength="300" />
+
+                <TextView
+                    android:id="@+id/tvSendMsgFromReplyTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_gravity="bottom"
+                    android:gravity="right|bottom"
+                    android:text="41분 전"
+                    android:textColor="@color/colorChacol"
+                    android:textSize="10dp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorChacol"/>
+
+                <TextView
+                    android:id="@+id/tvTitleItemSecond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_msg_list"
+                    android:textColor="@color/colorMint"
+                    android:textSize="14dp"/>
+
+
+            </LinearLayout>
+
+
+
             <TextView
                 android:id="@+id/tvMsg"
                 android:layout_width="match_parent"
@@ -79,7 +138,7 @@
                     android:id="@+id/btnReply"
                     android:layout_width="80dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/rounded_btn_send_message"
+                    android:background="@drawable/circled_mint_box"
                     android:text="@string/btn_reply"
                     android:textSize="14dp"
                     android:textColor="@color/colorWhite"

@@ -49,6 +49,7 @@ public class BaseActivity extends FragmentActivity{
         TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
         tv.setText(getResources().getString(msgId));
         Button btn = (Button) dialog.findViewById(R.id.btn_alert_dialog_positive);
+        btn.setBackgroundResource(R.drawable.bg_alert_btn_mint_rounded_bottom);
         ((Button)dialog.findViewById(R.id.btn_alert_dialog_negative)).setVisibility(View.GONE);
         btn.setText("확인");
         btn.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +71,7 @@ public class BaseActivity extends FragmentActivity{
         TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
         tv.setText(getResources().getString(msgId));
         Button btn = (Button) dialog.findViewById(R.id.btn_alert_dialog_positive);
+        btn.setBackgroundResource(R.drawable.bg_alert_btn_mint_rounded_bottom);
         ((Button)dialog.findViewById(R.id.btn_alert_dialog_negative)).setVisibility(View.GONE);
         btn.setText(getResources().getString(btnNmId));
         btn.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +94,7 @@ public class BaseActivity extends FragmentActivity{
         TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
         tv.setText(msg);
         Button btn = (Button) dialog.findViewById(R.id.btn_alert_dialog_positive);
+        btn.setBackgroundResource(R.drawable.bg_alert_btn_mint_rounded_bottom);
         ((Button)dialog.findViewById(R.id.btn_alert_dialog_negative)).setVisibility(View.GONE);
         btn.setText(getResources().getString(btnNmId));
         btn.setOnClickListener(new View.OnClickListener() {
