@@ -24,6 +24,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
     private TextView tvReciever;
     private BackPressEditText editPhoneNo, editMessage;
     private LinearLayout llSendOptions;
-    private Button btnHome, btnSendMessage, btnPhoneNo, btnMy, spinnerSendType;
+    private ImageButton btnHome, btnMy;
+    private Button btnSendMessage, btnPhoneNo, spinnerSendType;
     private String editedPhoneNo = "";
     private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 11;
@@ -60,11 +62,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        btnMy = (Button) context.findViewById(R.id.btnMy);
+        btnMy = (ImageButton) context.findViewById(R.id.btnMy);
         tvReciever = (TextView) fragmentView.findViewById(R.id.tvReciever);
         editPhoneNo = (BackPressEditText) fragmentView.findViewById(R.id.editPhoneNo);
         editMessage = (BackPressEditText) fragmentView.findViewById(R.id.editMessage);
-        btnHome = (Button) context.findViewById(R.id.btnHome);
+        btnHome = (ImageButton) context.findViewById(R.id.btnHome);
         btnPhoneNo = (Button) fragmentView.findViewById(R.id.btnPhoneNo);
         btnSendMessage = (Button) context.findViewById(R.id.btnSendMessage);
         spinnerSendType = (Button) context.findViewById(R.id.spinnerSendType);
@@ -108,10 +110,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
                             phoneNo = editPhoneNo.getTag().toString();
                             editPhoneNo.setText(phoneNo);
                         }
-                        llSendOptions.setBackground(getResources().getDrawable(R.drawable.layout_with_chacol_stroke));
                     } else {
                         setEditPhoneNo(phoneNo);
-                        llSendOptions.setBackground(getResources().getDrawable(R.color.colorWhite));
 
                     }
 
@@ -146,10 +146,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    llSendOptions.setBackground(getResources().getDrawable(R.drawable.layout_with_chacol_stroke));
                     editMessage.setMaxLines(7);
                 } else {
-                    llSendOptions.setBackground(getResources().getDrawable(R.color.colorWhite));
                     editMessage.setMaxLines(300);
                 }
             }
@@ -223,7 +221,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
                         param.putString("phoneNo", editedPhoneNo);
                         param.putString("message", editMessage.getText().toString());
 
-                        NetworkThreadTask mTask = new NetworkThreadTask(context, true);
+                        NetworkThreadTask mTask = new NetworkThreadTask(context, false);
                         mTask.setOnCompleteListener(HomeFragment.this);
                         mTask.execute(param);
                     }
@@ -447,7 +445,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         @Override
         public void onBackPress()
         {
-            llSendOptions.setBackground(getResources().getDrawable(R.color.colorWhite));
             editMessage.setMaxLines(300);
             editMessage.clearFocus();
         }
@@ -473,7 +470,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         param.putString("msg", getSmsMsg());
 
 
-        NetworkThreadTask mTask = new NetworkThreadTask(context, true);
+        NetworkThreadTask mTask = new NetworkThreadTask(context, false);
         mTask.setOnCompleteListener(this);
         mTask.execute(param);
     }
@@ -487,7 +484,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         param.putString("msg", getSmsMsg());
 
 
-        NetworkThreadTask mTask = new NetworkThreadTask(context, true);
+        NetworkThreadTask mTask = new NetworkThreadTask(context, false);
         mTask.setOnCompleteListener(this);
         mTask.execute(param);
     }

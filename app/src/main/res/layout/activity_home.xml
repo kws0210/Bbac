@@ -17,34 +17,14 @@
         android:gravity="center_vertical"
         android:background="@color/colorMint">
 
-        <Button
+        <ImageButton
             android:id="@+id/btnHome"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/btn_home"
-            android:gravity="center"
-            android:layout_marginLeft="14dp"
-            android:layout_centerVertical="true"/>
-
-        <LinearLayout
-            android:id="@+id/llAllCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="10dp"
-            android:layout_alignParentLeft="true"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/tvAllCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="@string/select_all"
-                android:textSize="14dp"
-                android:textColor="@color/colorWhite" />
-
-        </LinearLayout>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:padding="14dp"
+            android:src="@drawable/btn_home" />
 
 
         <TextView
@@ -61,58 +41,43 @@
 
         <ImageView
             android:id="@+id/ivFragmentTitle"
-            android:layout_width="18dp"
-            android:layout_height="9dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/arrow_down"
             android:layout_centerVertical="true"
-            android:paddingLeft="5dp"
+            android:padding="7dp"
             android:layout_toRightOf="@id/tvFragmentTitle"
             android:clickable="true"
             android:visibility="gone"/>
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="53dp"
             android:layout_height="50dp"
-            android:padding="4dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true">
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnMy"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="9dp"
-                android:layout_alignParentRight="true"
-                android:padding="5dp"
-                android:background="@drawable/icon_message_list" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="12dp"
+                android:layout_marginRight="3dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/icon_message_list"
+                android:background="@android:color/transparent"/>
 
             <TextView
                 android:id="@+id/tvMessageCount"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:gravity="center"
-                android:layout_marginTop="2dp"
-                android:paddingTop="3dp"
-                android:paddingRight="1dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="9dp"
+                android:layout_marginRight="5dp"
                 android:textColor="@color/colorMint"
                 android:textStyle="bold"
                 android:textSize="10dp"
-                android:background="@drawable/circle_white"
-                android:layout_alignParentRight="true"/>
-
-            <Button
-                android:id="@+id/btnDelete"
-                android:layout_width="40dp"
-                android:layout_height="25dp"
-                android:layout_marginRight="9dp"
-                android:background="@android:color/transparent"
-                android:text="@string/btn_delete_nor"
-                android:gravity="right|center_vertical"
-                android:textColor="@color/colorWhite"
-                android:layout_centerVertical="true"
-                android:textSize="14dp"
-                android:visibility="gone" />
+                android:background="@drawable/circle_white" />
 
         </RelativeLayout>
 
@@ -129,18 +94,18 @@
     <LinearLayout
         android:id="@+id/llSendOptions"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:gravity="center_vertical"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorWhite"
+        android:background="@drawable/white_box_with_top_gray"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/spinnerSendType"
             android:layout_width="0dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:layout_weight="3"
             android:layout_marginRight="5dp"
             android:paddingLeft="15dp"
@@ -154,10 +119,11 @@
             android:id="@+id/btnSendMessage"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:background="@drawable/circled_mint_box"
             android:text="@string/home_btn_send"
             android:textColor="@color/colorWhite"
+            android:stateListAnimator="@null"
             android:textSize="15dp"
             android:textStyle="bold" />
 

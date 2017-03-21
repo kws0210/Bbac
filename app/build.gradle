@@ -8,8 +8,8 @@ android {
         applicationId "world.picpic.www.bbac"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 104
-        versionName "1.0.4"
+        versionCode 200
+        versionName "2.0.0"
         multiDexEnabled true
 
         useLibrary 'org.apache.http.legacy'

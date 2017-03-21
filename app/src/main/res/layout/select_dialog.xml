@@ -16,7 +16,13 @@
         android:background="@drawable/bg_alert_btn_mint_rounded"
         android:text="@string/alert_btn_neg"
         android:textColor="@drawable/font_mint_alert_btn"
+        android:textStyle="bold"
         android:textSize="18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorHighlight"/>
 
 
     <Button
@@ -29,6 +35,7 @@
         android:background="@drawable/bg_alert_btn_yellow_rounded"
         android:text="@string/alert_btn_pos"
         android:textColor="@drawable/font_yellow_alert_btn"
+        android:textStyle="bold"
         android:textSize="18sp" />
 
 </LinearLayout>

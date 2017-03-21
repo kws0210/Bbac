@@ -20,6 +20,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,7 @@ import world.picpic.www.bbac.util.CommonUtil;
 import world.picpic.www.bbac.util.NetworkThreadTask;
 
 public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCompleteListener {
-    private Button btnMy;
+    private ImageButton btnMy;
     public TextView tvFragmentTitle, tvMessageCount;
     private ImageView ivFragmentTitle;
     private HomeFragment homeFragment;
@@ -69,7 +70,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
         homeFragment = new HomeFragment();
         msgListFragment = new MsgListFragment();
 
-        btnMy = (Button) findViewById(R.id.btnMy);
+        btnMy = (ImageButton) findViewById(R.id.btnMy);
         tvFragmentTitle = (TextView) findViewById(R.id.tvFragmentTitle);
         tvMessageCount = (TextView) findViewById(R.id.tvMessageCount);
         ivFragmentTitle = (ImageView) findViewById(R.id.ivFragmentTitle);
@@ -140,7 +141,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
     }
 
     public void initTitle() {
-        btnMy.setBackground(getResources().getDrawable(R.drawable.icon_message_list));
+        btnMy.setImageDrawable(getResources().getDrawable(R.drawable.icon_message_list));
 
         findViewById(R.id.layoutTitle).setOnClickListener(onOutsideClickListnener);
         findViewById(R.id.layoutTitle).setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -155,7 +156,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
     }
 
     public void initFragment() {
-        btnMy.setBackground(getResources().getDrawable(R.drawable.icon_message_list));
+        btnMy.setImageDrawable(getResources().getDrawable(R.drawable.icon_message_list));
         tvFragmentTitle.setText(getString(R.string.title_btn_home));
         ivFragmentTitle.setVisibility(View.GONE);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -171,7 +172,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (isHome) {
-            btnMy.setBackground(getResources().getDrawable(R.drawable.btn_setting));
+            btnMy.setImageDrawable(getResources().getDrawable(R.drawable.btn_setting));
             tvFragmentTitle.setText(getString(R.string.title_msg_list));
             ivFragmentTitle.setVisibility(View.VISIBLE);
             tvMessageCount.setVisibility(View.GONE);
@@ -182,7 +183,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
             bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "화면 전환 : " + getString(R.string.title_msg_list));
 
         } else {
-            btnMy.setBackground(getResources().getDrawable(R.drawable.icon_message_list));
+            btnMy.setImageDrawable(getResources().getDrawable(R.drawable.icon_message_list));
             tvFragmentTitle.setText(getString(R.string.title_btn_home));
             ivFragmentTitle.setVisibility(View.GONE);
             requestMsgCount();
@@ -200,7 +201,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
     }
 
     public void transitFragmentByReply(Fragment fragment, String fromWhom, String msg, String seq) {
-        btnMy.setBackground(getResources().getDrawable(R.drawable.icon_message_list));
+        btnMy.setImageDrawable(getResources().getDrawable(R.drawable.icon_message_list));
         tvFragmentTitle.setText(getString(R.string.title_btn_home));
         ivFragmentTitle.setVisibility(View.GONE);
         requestMsgCount();
@@ -269,7 +270,6 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
     public void onBackPressed() {
         String fragmentTag = getSupportFragmentManager().findFragmentById(R.id.mainFragment).toString();
         if (fragmentTag.startsWith(getResources().getString(R.string.tag_msg_list))) {
-            ((MsgListFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).cancelDelete();
             transitFragment(homeFragment, false);
         } else if (fragmentTag.startsWith(getResources().getString(R.string.tag_home))) {
             if ("".equals(getFromSeq())) {

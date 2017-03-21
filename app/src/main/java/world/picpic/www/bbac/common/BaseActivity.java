@@ -51,6 +51,7 @@ public class BaseActivity extends FragmentActivity{
         Button btn = (Button) dialog.findViewById(R.id.btn_alert_dialog_positive);
         btn.setBackgroundResource(R.drawable.bg_alert_btn_mint_rounded_bottom);
         ((Button)dialog.findViewById(R.id.btn_alert_dialog_negative)).setVisibility(View.GONE);
+        ((View)dialog.findViewById(R.id.line_alert_dialog_btns)).setVisibility(View.GONE);
         btn.setText("확인");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_service_use_agree"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context="world.picpic.www.bbac.SettingActivity">
+
+    <RelativeLayout
+        android:id="@+id/layoutTitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorMint"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerInside"
+            android:padding="14dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/arrow_left"
+            android:onClick="onClick"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tvFragmentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/title_setting"
+            android:textColor="@color/colorWhite"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorLightGray">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="10dp"
+            android:text="@string/setting_push"
+            android:textSize="12dp"
+            android:textColor="@color/colorDarkGray"
+            android:gravity="bottom" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorGray"/>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="101dp"
+            android:paddingLeft="15dp"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+            
+            <LinearLayout
+                android:id="@+id/llPushNoti"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_push_noti"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15dp"/>
+
+                <ImageView
+                    android:id="@+id/ivPushNoti"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="15dp"
+                    android:onClick="onClick"
+                    android:src="@drawable/switch_on"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
+
+            <LinearLayout
+                android:id="@+id/llPushVibrate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_push_sound"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15dp"/>
+
+                <ImageView
+                    android:id="@+id/ivPushSound"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="15dp"
+                    android:onClick="onClick"
+                    android:src="@drawable/switch_on"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorGray"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="10dp"
+            android:text="@string/setting_receive"
+            android:textSize="12dp"
+            android:textColor="@color/colorDarkGray"
+            android:gravity="bottom" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorGray"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="101dp"
+            android:paddingLeft="15dp"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llReceiveSms"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/setting_receive_sms"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15dp"/>
+
+                    <TextView
+                        android:id="@+id/tvReceiveSmsSub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/setting_receive_sms_sub_off"
+                        android:textColor="@color/colorDarkGray"
+                        android:textSize="12dp"/>
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/ivReceiveSms"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="15dp"
+                    android:onClick="onClick"
+                    android:src="@drawable/switch_on"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
+
+            <LinearLayout
+                android:id="@+id/llReceiveBlockedList"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:onClick="onClick"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_receive_blocked_list"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15dp"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:padding="3dp"
+                    android:src="@drawable/arrow_enter"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorGray"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="10dp"
+            android:text="@string/setting_service"
+            android:textSize="12dp"
+            android:textColor="@color/colorDarkGray"
+            android:gravity="bottom" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorGray"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="101dp"
+            android:paddingLeft="15dp"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llServiceUseAgree"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:onClick="onClick"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/service_use_agree"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15dp"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:padding="3dp"
+                    android:src="@drawable/arrow_enter"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
+
+            <LinearLayout
+                android:id="@+id/llPersonnelInfoAgree"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:onClick="onClick"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/personnel_info_agree"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15dp"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:padding="3dp"
+                    android:src="@drawable/arrow_enter"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorGray"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

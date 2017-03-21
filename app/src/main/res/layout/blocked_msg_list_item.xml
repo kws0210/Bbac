@@ -43,8 +43,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:paddingTop="10dp"
-                    android:text="@string/deleted_message"
                     android:textColor="@color/colorChacol"
+                    android:text="@string/deleted_message"
                     android:textSize="14dp"
                     android:ellipsize="end"
                     android:maxLength="300" />
@@ -87,18 +87,16 @@
                     android:textStyle="bold"
                     android:textSize="14dp"/>
 
-                <ImageButton
-                    android:id="@+id/btnMessageDeleteOrBlock"
+                <View
                     android:layout_width="40dp"
                     android:layout_height="15dp"
-                    android:scaleType="centerInside"
                     android:paddingLeft="9dp"
                     android:paddingRight="9dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/icon_message_extra"/>
+                    android:background="@android:color/transparent" />
+
             </LinearLayout>
 
 
@@ -145,7 +143,7 @@
                     android:layout_width="80dp"
                     android:layout_height="30dp"
                     android:background="@drawable/circled_mint_box"
-                    android:text="@string/btn_reply"
+                    android:text="@string/delete_block"
                     android:textSize="14dp"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"

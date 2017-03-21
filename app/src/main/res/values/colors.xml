@@ -4,11 +4,13 @@
     <color name="colorDipBbac">#D3261A</color>
     <color name="colorBbacLight">#33F4513B</color>
     <color name="colorYellow">#ffbb1c</color>
-    <color name="colorMint">#22CE91</color>
+    <color name="colorMint">#00D49F</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#202020</color>
     <color name="colorChacol">#8A8C8C</color>
     <color name="colorGray">#C8C8C8</color>
-    <color name="colorLightGray">#EAEAEA</color>
+    <color name="colorDarkGray">#666666</color>
+    <color name="colorLightGray">#F3F3F9</color>
     <color name="colorDimmedBlack">#4D4D4D</color>
+    <color name="colorHighlight">#383838</color>
 </resources>

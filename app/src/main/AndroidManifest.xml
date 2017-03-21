@@ -20,17 +20,27 @@
             android:name=".HomeActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <activity android:name=".ServiceUseAgreeActivity"
+        <activity
+            android:name=".ServiceUseAgreeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".PersonnelInfoAgreeActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <activity android:name=".PersonnelInfoAgreeActivity"
+        <activity
+            android:name=".BlockedMessageListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name=".SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 

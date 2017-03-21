@@ -79,7 +79,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            sendNotification(remoteMessage.getData().get("message"));
+//            sendNotification(remoteMessage.getData().get("message"));
+            CommonUtil.sendNotification(getApplicationContext(), remoteMessage.getData().get("message"));
         }
 
         // Check if message contains a notification payload.
@@ -97,55 +98,55 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
-        Intent pushIntent = new Intent("fromPush");
-        sendBroadcast(pushIntent);
-
-        String badgeCount = String.valueOf(Integer.parseInt(CommonUtil.getBadgeCount(getApplicationContext())) + 1 );
-        CommonUtil.setBadgeCount(getApplicationContext(),  badgeCount);
-        setBadgeCount(badgeCount);
-
-
-
-
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("isFromNoti", true);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, REQ_CODE_GET_NOTIFICATION, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_reverse)
-                .setColor(getResources().getColor(R.color.colorMint))
-                .setContentTitle(getResources().getString(R.string.noti_title))
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setTicker(messageBody)
-                .setContentIntent(pendingIntent)
-                .setPriority(Notification.PRIORITY_HIGH);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-//        int timeMillis = (int)(System.currentTimeMillis()&0xfffffff);
-        notificationManager.notify(0, notificationBuilder.build());
-
-        KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-        if( km.inKeyguardRestrictedInputMode()) {
-            //it is locked
-            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-            PowerManager.WakeLock wl=pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.FULL_WAKE_LOCK, getString(R.string.app_name));
-            wl.acquire();
-        }
-    }
-
-    private void setBadgeCount(String strCount) {
-        Intent intent = new Intent("android.intent.action.BADGE_COUNT_UPDATE");
-        intent.putExtra("badge_count_package_name", "world.picpic.www.bbac");
-        intent.putExtra("badge_count_class_name", "world.picpic.www.bbac.HomeActivity");
-        intent.putExtra("badge_count", Integer.parseInt(strCount));
-        sendBroadcast(intent);
-    }
+//    private void sendNotification(String messageBody) {
+//        Intent pushIntent = new Intent("fromPush");
+//        sendBroadcast(pushIntent);
+//
+//        String badgeCount = String.valueOf(Integer.parseInt(CommonUtil.getBadgeCount(getApplicationContext())) + 1 );
+//        CommonUtil.setBadgeCount(getApplicationContext(),  badgeCount);
+//        setBadgeCount(badgeCount);
+//
+//
+//
+//
+//        Intent intent = new Intent(this, HomeActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        intent.putExtra("isFromNoti", true);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, REQ_CODE_GET_NOTIFICATION, intent,
+//                PendingIntent.FLAG_ONE_SHOT);
+//
+//        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+//                .setSmallIcon(R.drawable.ic_reverse)
+//                .setColor(getResources().getColor(R.color.colorMint))
+//                .setContentTitle(getResources().getString(R.string.noti_title))
+//                .setContentText(messageBody)
+//                .setAutoCancel(true)
+//                .setSound(defaultSoundUri)
+//                .setTicker(messageBody)
+//                .setContentIntent(pendingIntent)
+//                .setPriority(Notification.PRIORITY_HIGH);
+//
+//        NotificationManager notificationManager =
+//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//
+////        int timeMillis = (int)(System.currentTimeMillis()&0xfffffff);
+//        notificationManager.notify(0, notificationBuilder.build());
+//
+//        KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+//        if( km.inKeyguardRestrictedInputMode()) {
+//            //it is locked
+//            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+//            PowerManager.WakeLock wl=pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.FULL_WAKE_LOCK, getString(R.string.app_name));
+//            wl.acquire();
+//        }
+//    }
+//
+//    private void setBadgeCount(String strCount) {
+//        Intent intent = new Intent("android.intent.action.BADGE_COUNT_UPDATE");
+//        intent.putExtra("badge_count_package_name", "world.picpic.www.bbac");
+//        intent.putExtra("badge_count_class_name", "world.picpic.www.bbac.HomeActivity");
+//        intent.putExtra("badge_count", Integer.parseInt(strCount));
+//        sendBroadcast(intent);
+//    }
 }

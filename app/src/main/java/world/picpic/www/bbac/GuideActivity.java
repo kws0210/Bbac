@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.SpannableString;
@@ -14,10 +15,13 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -178,7 +182,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 @Override
                 public void onClick(View textView) {
                     startActivity(new Intent(GuideActivity.this, ServiceUseAgreeActivity.class));
-                    overridePendingTransition(R.anim.animation_from_left, R.anim.animation_to_right);
+                    overridePendingTransition(R.anim.animation_from_right, R.anim.animation_to_left);
                 }
                 @Override
                 public void updateDrawState(TextPaint ds) {
@@ -190,7 +194,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 @Override
                 public void onClick(View textView) {
                     startActivity(new Intent(GuideActivity.this, PersonnelInfoAgreeActivity.class));
-                    overridePendingTransition(R.anim.animation_from_left, R.anim.animation_to_right);
+                    overridePendingTransition(R.anim.animation_from_right, R.anim.animation_to_left);
                 }
                 @Override
                 public void updateDrawState(TextPaint ds) {
@@ -199,7 +203,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 }
             };
             ss.setSpan(clickableSpanServiceUseAgree, 15, 22, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(getColor(R.color.colorHighlight)), 15, 22, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(clickableSpanPersonnelInfoAgree, 24, 32, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(getColor(R.color.colorHighlight)), 24, 32, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             tvServiceAgree.setText(ss);
             tvServiceAgree.setMovementMethod(LinkMovementMethod.getInstance());

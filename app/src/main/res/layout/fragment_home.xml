@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:background="@color/colorWhite"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
@@ -53,7 +53,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorDimmedBlack"/>
+        android:background="@color/colorGray"/>
 
     <world.picpic.www.bbac.util.BackPressEditText
         android:id="@+id/editMessage"
