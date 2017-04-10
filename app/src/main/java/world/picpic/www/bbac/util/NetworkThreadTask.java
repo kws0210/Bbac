@@ -34,15 +34,30 @@ public class NetworkThreadTask extends AsyncTask<Bundle, Bundle, Void> {
             pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             pd.setIndeterminate(true);
             pd.setMessage(Html.fromHtml("<font color='white'>"
-                    + context.getString(R.string.loding) + "</font>"));
+                    + context.getString(R.string.loading) + "</font>"));
             pd.setCancelable(false);
             pd.setCanceledOnTouchOutside(false);
             pd.hide();
         } else {
             pd = null;
         }
+    }
 
+    public NetworkThreadTask(Context context, boolean useProgress, String strLoading) {
+        this.context = context;
 
+        if(useProgress) {
+            pd = new ProgressDialog(context, R.style.ProgressDialogTheme);
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setIndeterminate(true);
+            pd.setMessage(Html.fromHtml("<font color='white'>"
+                    + strLoading + "</font>"));
+            pd.setCancelable(false);
+            pd.setCanceledOnTouchOutside(false);
+            pd.hide();
+        } else {
+            pd = null;
+        }
     }
 
     public interface OnCompleteListener {

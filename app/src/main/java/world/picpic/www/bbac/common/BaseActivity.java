@@ -45,6 +45,7 @@ public class BaseActivity extends FragmentActivity{
         final Dialog dialog = new Dialog(this, R.style.noTitleDialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.alertdialog);
+        dialog.setCanceledOnTouchOutside(false);
 
         TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
         tv.setText(getResources().getString(msgId));
@@ -68,6 +69,7 @@ public class BaseActivity extends FragmentActivity{
         final Dialog dialog = new Dialog(this, R.style.noTitleDialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.alertdialog);
+        dialog.setCanceledOnTouchOutside(false);
 
         TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
         tv.setText(getResources().getString(msgId));
@@ -91,6 +93,7 @@ public class BaseActivity extends FragmentActivity{
         final Dialog dialog = new Dialog(this, R.style.noTitleDialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.alertdialog);
+        dialog.setCanceledOnTouchOutside(false);
 
         TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
         tv.setText(msg);
@@ -114,6 +117,7 @@ public class BaseActivity extends FragmentActivity{
         final Dialog dialog = new Dialog(this, R.style.noTitleDialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.alertdialog);
+        dialog.setCanceledOnTouchOutside(false);
 
         TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
         tv.setText(getResources().getString(msgId));
@@ -143,6 +147,7 @@ public class BaseActivity extends FragmentActivity{
         final Dialog dialog = new Dialog(this, R.style.noTitleDialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.alertdialog);
+        dialog.setCanceledOnTouchOutside(false);
 
         TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
         tv.setText(msgId);
@@ -174,6 +179,7 @@ public class BaseActivity extends FragmentActivity{
         final Dialog dialog = new Dialog(this, R.style.noTitleDialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.alertdialog);
+        dialog.setCanceledOnTouchOutside(false);
 
         TextView tv = (TextView) dialog.findViewById(R.id.tv_alert_dialog);
         tv.setText(msg);
@@ -205,6 +211,7 @@ public class BaseActivity extends FragmentActivity{
         final Dialog dialog = new Dialog(this, R.style.noTitleDialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.select_dialog);
+        dialog.setCanceledOnTouchOutside(false);
 
         Button btnPositive = (Button) dialog.findViewById(R.id.btn_alert_dialog_positive);
         Button btnNegative = (Button) dialog.findViewById(R.id.btn_alert_dialog_negative);

@@ -203,9 +203,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 }
             };
             ss.setSpan(clickableSpanServiceUseAgree, 15, 22, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new ForegroundColorSpan(getColor(R.color.colorHighlight)), 15, 22, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(ContextCompat.getColor(GuideActivity.this, R.color.colorHighlight)), 15, 22, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(clickableSpanPersonnelInfoAgree, 24, 32, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new ForegroundColorSpan(getColor(R.color.colorHighlight)), 24, 32, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(ContextCompat.getColor(GuideActivity.this, R.color.colorHighlight)), 24, 32, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             tvServiceAgree.setText(ss);
             tvServiceAgree.setMovementMethod(LinkMovementMethod.getInstance());

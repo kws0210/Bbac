@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context="world.picpic.www.bbac.SettingActivity">
+    tools:context=".SettingActivity">
 
     <RelativeLayout
         android:id="@+id/layoutTitle"

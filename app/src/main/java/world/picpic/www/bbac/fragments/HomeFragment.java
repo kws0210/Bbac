@@ -221,7 +221,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
                         param.putString("phoneNo", editedPhoneNo);
                         param.putString("message", editMessage.getText().toString());
 
-                        NetworkThreadTask mTask = new NetworkThreadTask(context, false);
+                        NetworkThreadTask mTask = new NetworkThreadTask(context, true, getResources().getString(R.string.sending));
                         mTask.setOnCompleteListener(HomeFragment.this);
                         mTask.execute(param);
                     }
@@ -470,7 +470,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         param.putString("msg", getSmsMsg());
 
 
-        NetworkThreadTask mTask = new NetworkThreadTask(context, false);
+        NetworkThreadTask mTask = new NetworkThreadTask(context, true, getResources().getString(R.string.sending_sms));
         mTask.setOnCompleteListener(this);
         mTask.execute(param);
     }
@@ -484,7 +484,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Netw
         param.putString("msg", getSmsMsg());
 
 
-        NetworkThreadTask mTask = new NetworkThreadTask(context, false);
+        NetworkThreadTask mTask = new NetworkThreadTask(context, true, getResources().getString(R.string.sending_sms));
         mTask.setOnCompleteListener(this);
         mTask.execute(param);
     }
