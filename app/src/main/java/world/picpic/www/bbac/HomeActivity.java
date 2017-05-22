@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -49,6 +50,7 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
     private final int REQ_PHONE_BOOK = 101;
     private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
     private final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 11;
+    private final int MY_PERMISSIONS_REQUEST_CODE_DRAW_OVERLAYS = 12;
     private final int REQ_CODE_REGISTER = 12;
     private final int REQ_CODE_GET_MESSAGE_COUNT = 13;
     private final int REQ_CODE_GET_GOOGLE_PLAY_ADDRESS = 14;
@@ -165,6 +167,15 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
         fragmentTransaction.commit();
     }
 
+    public void permissionToDrawOverlays() {
+        if (android.os.Build.VERSION.SDK_INT >= 23) {   //Android M Or Over
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, MY_PERMISSIONS_REQUEST_CODE_DRAW_OVERLAYS);
+            }
+        }
+    }
+
     public void transitFragment(Fragment fragment, boolean isHome) {
         Bundle bundle = new Bundle();
 
@@ -250,6 +261,12 @@ public class HomeActivity extends BaseActivity implements NetworkThreadTask.OnCo
                 ((HomeFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getEditPhoneNo().setText(CommonUtil.formatMessageTargetNameAndNumber(name, number));
                 ((HomeFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getEditPhoneNo().setTag(number);
                 ((HomeFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment)).getEditPhoneNo().clearFocus();
+            }
+        } else if (requestCode == MY_PERMISSIONS_REQUEST_CODE_DRAW_OVERLAYS) {
+            if (android.os.Build.VERSION.SDK_INT >= 23) {   //Android M Or Over
+                if (!Settings.canDrawOverlays(this)) {
+                    ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Settings.ACTION_MANAGE_OVERLAY_PERMISSION}, MY_PERMISSIONS_REQUEST_CODE_DRAW_OVERLAYS);
+                }
             }
         }
     }
